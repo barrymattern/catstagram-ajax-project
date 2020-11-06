@@ -3,21 +3,16 @@ window.addEventListener('DOMContentLoaded', event => {
   const newPicBtn = document.querySelector('#new-pic');
   const loader = document.querySelector('.loader');
 
-  // function getCatPic() {
-  //   fetch('/kitten/image')
-  //     .then(cat => cat.json())
-  //     .then(catObj => {
-  //       catPic.src = catObj.src;
-  //     });
-  // }
-
   let getCatPic2 = async () => {
-    let catRequest = await fetch('/kitten/image');
-    loader.innerHTML = "Loading...";
-    let catReturned = await catRequest.json();
-    let catObj = await catReturned;
-    loader.innerHTML = '';
-    catPic.src = catObj.src;
+      let catRequest = await fetch('/kitten/image');
+      if (!catRequest.ok) {
+        alert('Something went wrong! Please try again!');
+      } else {
+        loader.innerHTML = "Loading...";
+        let catReturned = await catRequest.json();
+        loader.innerHTML = '';
+        catPic.src = catReturned.src;
+      }
   };
 
   newPicBtn.addEventListener('click', event => {

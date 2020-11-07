@@ -15,7 +15,7 @@ let getCatPic = async () => {
 
 let vote = async event => {
   try {
-    const res = await fetch(`kitten/${event.target.id}`, { method: 'PATCH' });
+    const res = await fetch(`/kitten/${event.target.id}`, { method: 'PATCH' });
 
     if (!res.ok) {
       throw res;
@@ -23,6 +23,37 @@ let vote = async event => {
       const data = await res.json();
       const score = document.querySelector('.score');
       score.innerText = data.score;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+let addComment = async event => {
+  event.preventDefault();
+  
+  try {
+    const comment = document.querySelector('#user-comment');
+    let res = await fetch(
+      '/kitten/comments',
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify({ comments: comment.value }),
+      });
+      
+      if (!res.ok) {
+        throw res;
+      } else {
+        const data = await res.json();
+        const commentField = document.querySelector('.comments');
+        data.comments.forEach(comment => {
+          commentField.innerHTML = '';
+          commentField.innerHTML += comment; // Not working, fix
+          comment.value = ''; // Not working, fix
+        });
     }
   } catch (error) {
     console.log(error);
@@ -39,3 +70,6 @@ upVoteBtn.addEventListener('click', vote);
 
 const downVoteBtn = document.querySelector('#downvote')
 downVoteBtn.addEventListener('click', vote);
+
+const commentForm = document.querySelector('.comment-form');
+commentForm.addEventListener('submit', addComment);

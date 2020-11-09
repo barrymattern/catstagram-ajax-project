@@ -38,6 +38,34 @@ const vote = async event => {
   }
 }
 
+// Function not working – 'null' response
+const addComment = async event => {
+  event.preventDefault();
+
+  const comment = document.querySelector('#user-comment');
+  const updateComment = await fetch(
+    '/kitten/comments',
+    {
+      method: 'POST',
+      header: {
+        'Content-Type':'application/json'
+      },
+      body: { 
+        comment: comment.value
+      }
+    }
+  );
+
+  if (!updateComment.ok) {
+    alert('Something went wrong! Please try again!');
+  } else {
+    const data = await updateComment.json();
+    data.comments.forEach(comment => {
+      console.log(comment);
+    });
+  }
+};
+
 window.addEventListener('DOMContentLoaded', getCatPic);
 
 const newPicBtn = document.querySelector('#new-pic');
@@ -48,3 +76,6 @@ upVoteBtn.addEventListener('click', vote);
 
 const downVoteBtn = document.querySelector('#downvote');
 downVoteBtn.addEventListener('click', vote);
+
+const form = document.querySelector('.comment-form');
+form.addEventListener('submit', addComment);

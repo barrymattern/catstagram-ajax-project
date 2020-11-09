@@ -8,17 +8,17 @@ const updateLoadStatus = () => {
 };
 
 const getCatPic = async () => {
-  try {
     const catPic = document.querySelector('.cat-pic');
     const catPicRequest = await fetch('/kitten/image');
-    updateLoadStatus();
-    const data = await catPicRequest.json();
-    updateLoadStatus();
 
-    catPic.src = data.src;
-  } catch (e) {
-    console.error(e);
-  }
+    if (!catPicRequest.ok) {
+      alert('Something went wrong! Please try again!');
+    } else {
+      updateLoadStatus();
+      const data = await catPicRequest.json();
+      catPic.src = data.src;
+      updateLoadStatus();
+    }
 };
 
 window.addEventListener('DOMContentLoaded', getCatPic);

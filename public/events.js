@@ -21,7 +21,30 @@ const getCatPic = async () => {
     }
 };
 
+const vote = async event => {
+  const voteRequest = await fetch(
+    `/kitten/${event.target.id}`,
+    {
+      method: 'PATCH'
+    }
+  );
+
+  if (!voteRequest.ok) {
+    alert('Something went wrong! Please try again!');
+  } else {
+    const data = await voteRequest.json();
+    const score = document.querySelector('.score');
+    score.innerHTML = data.score;
+  }
+}
+
 window.addEventListener('DOMContentLoaded', getCatPic);
 
 const newPicBtn = document.querySelector('#new-pic');
 newPicBtn.addEventListener('click', getCatPic);
+
+const upVoteBtn = document.querySelector('#upvote');
+upVoteBtn.addEventListener('click', vote);
+
+const downVoteBtn = document.querySelector('#downvote');
+downVoteBtn.addEventListener('click', vote);

@@ -50,9 +50,9 @@ const addComment = async event => {
       header: {
         'Content-Type':'application/json'
       },
-      body: { 
+      body: JSON.stringify({ 
         comment: comment.value
-      }
+      })
     }
   );
 
